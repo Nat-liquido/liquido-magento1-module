@@ -3,6 +3,7 @@
     "description": "Liquido Pay In module for Magento 1.9",
     "type": "magento-module",
     "license": "MIT",
+    "prefer-stable": true,
     "minimum-stability": "dev",
     "require": {
         "composer/installers": "~1.0"
