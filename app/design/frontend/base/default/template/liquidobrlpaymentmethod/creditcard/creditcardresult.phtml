@@ -1,0 +1,29 @@
+<?php
+
+$creditCardResultData = Mage::registry('creditCardResultData');
+
+use \LiquidoBrl\PayInPhpSdk\Util\PaymentMethod;
+use \LiquidoBrl\PayInPhpSdk\Util\PayInStatus; ?>
+
+<div>
+<h1><?php echo $this->__('Liquido BRL Pagamentos') ?></h1>
+    <?php if (!$creditCardResultData->getData('hasFailed')) : ?>
+        <h3>Número do pedido: <?php echo $this->__($creditCardResultData->getData('orderId')) ?></h3>
+        <?php if (
+            $creditCardResultData->getData('paymentMethod') == PaymentMethod::CREDIT_CARD
+            && $creditCardResultData->getData('transferStatus') == PayInStatus::SETTLED
+        ) : ?>
+
+            <h3>Você pagou: <?php echo $creditCardResultData->getData('installments'); ?></h3>
+            <h3>Valor total: R$ <?php echo $creditCardResultData->getData('amount'); ?></h3>
+
+        <?php elseif ($creditCardResultData->getData('transferStatus') == PayInStatus::IN_PROGRESS) : ?>
+            <h3><strong>Você já gerou um pagamento com <?php echo __(Liquido_Liquidobrlpaymentmethod_Util_LiquidoBrlPaymentMethodType::getPaymentMethodName($creditCardResultData->getData('paymentMethod'))) ?></strong></h3>
+        <?php elseif ($creditCardResultData->getData('transferStatus') == PayInStatus::SETTLED) : ?>
+            <h3><strong>Você já pagou com <?php echo __(Liquido_Liquidobrlpaymentmethod_Util_LiquidoBrlPaymentMethodType::getPaymentMethodName($creditCardResultData->getData('paymentMethod'))) ?></strong></h3>
+        <?php endif; ?>
+    <?php else : ?>
+        <a href="<?php echo __(Mage::getUrl('liquidobrlpaymentmethod/index/redirect')) ?>">Alterar método de pagamento</a>
+    <?php endif; ?>
+</div>
+<script src="<?php echo $this->getSkinUrl('liquidobrlpaymentmethod/js/lib/util.js'); ?>"></script>

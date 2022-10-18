@@ -1,0 +1,42 @@
+<?php
+
+$pixResultData = Mage::registry('pixResultData');
+
+use \LiquidoBrl\PayInPhpSdk\Util\PaymentMethod;
+use \LiquidoBrl\PayInPhpSdk\Util\PayInStatus; ?>
+
+<div>
+    <h1><?php echo $this->__('Liquido BRL Pagamentos') ?></h1>
+    <?php if (!$pixResultData->getData('hasFailed')) : ?>
+        <h3>Número do pedido: <?php echo $this->__($pixResultData->getData('orderId')) ?></h3>
+
+        <?php if (
+            $pixResultData->getData('paymentMethod') == PaymentMethod::PIX_STATIC_QR
+            && $pixResultData->getData('transferStatus') != PayInStatus::SETTLED
+        ) : ?>
+            <h2>Escaneie o código QR pelo seu app de pagamentos ou Internet Banking</h2>
+            <img style="height: 400px;" src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=<?php echo $this->__($pixResultData->getData('pixCode')) ?>&choe=UTF-8" alt="QR Code">
+            <hr />
+            <div id="pix-code-copy-paste">
+                <fieldset class="fieldset">
+                    <label for="pix-code">Se preferir, você pode pagá-lo copiando e colando o código abaixo:</label><br>
+                    <input type="text" id="pix-code" name="pix-code" readonly value="<?php echo $this->__($pixResultData->getData('pixCode')) ?>"><br>
+                </fieldset>
+                <div class="actions-toolbar">
+                    <div class="actions">
+                        <button onclick="copyToClipboard('pix-code')" class="button" title="<?php echo __('Copiar código') ?>">
+                            <span><?php echo __('Copiar código') ?></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        <?php elseif ($pixResultData->getData('transferStatus') == PayInStatus::IN_PROGRESS) : ?>
+            <h3><strong>Você já gerou um pagamento com <?php echo __(Liquido_Liquidobrlpaymentmethod_Util_LiquidoBrlPaymentMethodType::getPaymentMethodName($pixResultData->getData('paymentMethod'))) ?></strong></h3>
+        <?php elseif ($pixResultData->getData('transferStatus') == PayInStatus::SETTLED) : ?>
+            <h3><strong>Você já pagou com <?php echo __(Liquido_Liquidobrlpaymentmethod_Util_LiquidoBrlPaymentMethodType::getPaymentMethodName($pixResultData->getData('paymentMethod'))) ?></strong></h3>
+        <?php endif; ?>
+    <?php else : ?>
+        <a href="<?php echo __(Mage::getUrl('liquidobrlpaymentmethod/index/redirect')) ?>">Alterar método de pagamento</a>
+    <?php endif; ?>
+</div>
+<script src="<?php echo $this->getSkinUrl('liquidobrlpaymentmethod/js/lib/util.js'); ?>"></script>

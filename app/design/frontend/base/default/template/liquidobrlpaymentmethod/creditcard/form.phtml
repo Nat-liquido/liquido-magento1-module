@@ -1,0 +1,75 @@
+<div>
+    <h1><?php echo $this->__('Liquido BRL Pagamentos') ?></h1>
+    <h2>Pagar com <?php echo $this->__('Cartão de Crédito') ?></h2>
+    <form id="creditcard-customer-form" onsubmit="submitForm()" class="form" method="post" action="<?php echo Mage::helper('liquidobrlpaymentmethod')->getGenerateCreditCardPayment();
+                                                                                                    ?>">
+        <fieldset class="fieldset">
+            <legend class="legend"><span><?php echo __('Dados do Cartão') ?></span></legend><br>
+            <div class="input-box">
+                <label for="customer-card-number"><?php echo __('Numero') ?><span class="required">*</span></label><br>
+                <div class="control">
+                    <input type="text" name="customer-card-number" id="customer-card-number" value="" class="input-text required-entry validate-cc-number" title="<?php echo __('Numero') ?>" class="input-text">
+                </div>
+            </div>
+            <div class="input-box">
+                <label for="customer-card-name"><?php echo __('Nome Completo') ?><span class="required">*</span></label><br>
+                <div class="control">
+                    <input type="text" name="customer-card-name" id="customer-card-name" value="" class="input-text required-entry" title="<?php echo __('Nome Completo') ?>" class="input-text">
+                </div>
+            </div>
+            <div class="input-box">
+                <label for="customer-card-date"><?php echo __('Mes/Ano') ?><span class="required">*</span></label><br>
+                <div class="control">
+                    <input type="text" name="customer-card-date" id="customer-card-date" value="" class="input-text required-entry" title="<?php echo __('Mes/Ano') ?>" class="input-text">
+                </div>
+            </div>
+            <div class="input-box">
+                <label for="customer-card-cvv"><?php echo __('CVV') ?><span class="required">*</span></label><br>
+                <div class="control">
+                    <input type="text" name="customer-card-cvv" id="customer-card-cvv" value="" class="input-text required-entry validate-cc-cvn" title="<?php echo __('CVV') ?>" class="input-text">
+                </div>
+            </div>
+            <div class="input-box">
+                <label for="customer-cpf"><?php echo __('CPF') ?><span class="required">*</span></label>
+                <div class="control">
+                    <input type="text" name="customer-cpf" id="customer-cpf" value="" class="input-text required-entry validate-cpf" title="<?php echo __('CPF') ?>" class="input-text">
+                </div>
+            </div>
+            <div class="input-box">
+                <label for="customer-installments"><?php echo __('Número de Parcelas') ?><span class="required">*</span></label><br>
+                <select id="customer-installments" name="customer-installments" class="input-text required-entry" style="width:30%;">
+                    <?php $optionsInfoArray = Mage::helper('liquidobrlpaymentmethod')->getInstallments(); ?>
+                    <?php foreach ($optionsInfoArray as $index => $optionInfo) : ?>
+                        <option value="<?php echo $index + 1 ?>"><?php echo $optionInfo; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </fieldset>
+        <div class="actions buttons-set">
+            <button id="submit-button" type="submit" class="button" title="<?php echo __('Pagar') ?>">
+                <span><?php echo __('Pagar') ?></span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="<?php echo $this->getSkinUrl('liquidobrlpaymentmethod/js/lib/cpf-validator.js'); ?>"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+    //< ![CDATA[
+    var customerForm = new VarienForm('creditcard-customer-form', true);
+    Validation.add('validate-cpf', 'CPF inválido.', function(field_value) {
+        const isValid = validateCPF(field_value);
+        return isValid;
+    });
+    //]]>
+
+    function submitForm() {
+        var isFormValid = customerForm.validator.validate();
+        if (isFormValid) {
+            document.getElementById("submit-button").disabled = true;
+        }
+    }
+
+    jQuery("#customer-cpf").mask("999.999.999-99");
+</script>

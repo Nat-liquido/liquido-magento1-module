@@ -1,0 +1,51 @@
+<div>
+    <h1><?php echo $this->__('Liquido BRL Pagamentos') ?></h1>
+    <h2>Pagar com <?php echo $this->__('Boleto') ?></h2>
+    <form id="boleto-customer-form" onsubmit="submitForm()" class="form" method="post" action="<?php echo Mage::helper('liquidobrlpaymentmethod')->getGenerateBoleto();
+                                                                                                ?>">
+        <fieldset class="fieldset">
+            <legend class="legend"><span><?php echo __('Dados Pessoais') ?></span></legend><br>
+            <div class="input-box">
+                <label for="customer-cpf"><?php echo __('Cpf') ?><span class="required">*</span></label>
+                <div class="control">
+                    <input type="text" name="customer-cpf" id="customer-cpf" value="" class="input-text required-entry validate-cpf" title="<?php echo __('Cpf') ?>" class="input-text">
+                </div>
+            </div>
+            <div class="input-box">
+                <label for="customer-state"><?php echo __('Estado') ?><span class="required">*</span></label><br>
+                <select id="customer-state" name="customer-state" class="input-text required-entry">
+                    <option value=""><?php echo $this->__('Selecione:') ?></option>
+                    <?php foreach (Liquido_Liquidobrlpaymentmethod_Util_BrazilState::STATES as $state) : ?>
+                        <option value="<?php echo __($state["code"]) ?>"><?php echo __($state["name"]) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </fieldset>
+        <div class="actions buttons-set">
+            <button id="submit-button" type="submit" class="button" title="<?php echo __('Gerar Boleto') ?>">
+                <span><?php echo __('Gerar Boleto') ?></span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="<?php echo $this->getSkinUrl('liquidobrlpaymentmethod/js/lib/cpf-validator.js'); ?>"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+    //< ![CDATA[
+    var customerForm = new VarienForm('boleto-customer-form', true);
+    Validation.add('validate-cpf', 'CPF inválido.', function(field_value) {
+        const isValid = validateCPF(field_value);
+        return isValid;
+    });
+    //]]>
+
+    function submitForm() {
+        var isFormValid = customerForm.validator.validate();
+        if (isFormValid) {
+            document.getElementById("submit-button").disabled = true;
+        }
+    }
+
+    jQuery("#customer-cpf").mask("999.999.999-99");
+</script>

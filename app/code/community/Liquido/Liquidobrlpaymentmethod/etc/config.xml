@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<config>
+
+    <modules>
+        <Liquido_Liquidobrlpaymentmethod>
+            <version>0.0.6</version>
+        </Liquido_Liquidobrlpaymentmethod>
+    </modules>
+
+    <global>
+        <!-- <fieldsets>
+            <sales_convert_quote_payment>
+                <custom_field_one>
+                    <to_order_payment>*</to_order_payment>
+                </custom_field_one>
+                <custom_field_two>
+                    <to_order_payment>*</to_order_payment>
+                </custom_field_two>
+            </sales_convert_quote_payment>
+        </fieldsets> -->
+
+        <helpers>
+            <liquidobrlpaymentmethod>
+                <class>Liquido_Liquidobrlpaymentmethod_Helper</class>
+            </liquidobrlpaymentmethod>
+        </helpers>
+        <blocks>
+            <liquidobrlpaymentmethod>
+                <class>Liquido_Liquidobrlpaymentmethod_Block</class>
+            </liquidobrlpaymentmethod>
+        </blocks>
+        <models>
+            <liquidobrlpaymentmethod>
+                <class>Liquido_Liquidobrlpaymentmethod_Model</class>
+                <resourceModel>liquidobrlpaymentmethod_resource</resourceModel>
+            </liquidobrlpaymentmethod>
+            <liquidobrlpaymentmethod_resource>
+                <class>Liquido_Liquidobrlpaymentmethod_Model_Resource</class>
+                <entities>
+                    <liquidobrlsalesorder>
+                        <table>liquido_brl_payin_sales_order</table>
+                    </liquidobrlsalesorder>
+                </entities>
+            </liquidobrlpaymentmethod_resource>
+        </models>
+
+        <resources>
+            <liquidobrlpaymentmethod_setup>
+                <setup>
+                    <module>Liquido_Liquidobrlpaymentmethod</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </liquidobrlpaymentmethod_setup>
+        </resources>
+    </global>
+
+    <default>
+        <payment>
+            <liquidobrlpaymentmethod>
+                <model>liquidobrlpaymentmethod/paymentmethod</model>
+                <!-- <model>liquidobrlpaymentmethod/standard</model> -->
+                <active>1</active>
+                <order_status>pending</order_status>
+                <title>Liquido BRL Pagamentos</title>
+                <payment_action>sale</payment_action>
+                <!-- <allowspecific>0</allowspecific> -->
+                <sort_order>100</sort_order>
+            </liquidobrlpaymentmethod>
+        </payment>
+    </default>
+
+    <frontend>
+        <routers>
+            <liquidobrlpaymentmethod>
+                <use>standard</use>
+                <args>
+                    <module>Liquido_Liquidobrlpaymentmethod</module>
+                    <frontName>liquidobrlpaymentmethod</frontName>
+                </args>
+            </liquidobrlpaymentmethod>
+        </routers>
+    </frontend>
+
+</config>

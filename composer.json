@@ -5,7 +5,12 @@
     "license": "MIT",
     "prefer-stable": true,
     "minimum-stability": "dev",
+    "config": {
+        "vendor-dir": "lib/Liquidobrl/vendor"
+    },
     "require": {
-        "composer/installers": "~1.0"
+        "liquido-brl/payin-php-sdk": "0.0.4",
+        "composer/installers": "~1.0",
+        "magento-hackathon/magento-composer-installer": "*"
     }
 }

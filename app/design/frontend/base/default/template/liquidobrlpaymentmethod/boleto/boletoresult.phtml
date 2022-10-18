@@ -1,0 +1,44 @@
+<?php
+
+$boletoResultData = Mage::registry('boletoResultData');
+
+use \LiquidoBrl\PayInPhpSdk\Util\PaymentMethod;
+use \LiquidoBrl\PayInPhpSdk\Util\PayInStatus; ?>
+
+<div>
+    <h1><?php echo $this->__('Liquido BRL Pagamentos') ?></h1>
+    <?php if (!$boletoResultData->getData('hasFailed')) : ?>
+        <h3>Número do pedido: <?php echo $this->__($boletoResultData->getData('orderId')) ?></h3>
+
+        <?php if (
+            $boletoResultData->getData('paymentMethod') == PaymentMethod::BOLETO
+            && $boletoResultData->getData('transferStatus') != PayInStatus::SETTLED
+        ) : ?>
+            <h2>Pague seu boleto pelo seu app de pagamentos ou Internet Banking</h2>
+            <!-- <div id="pdf-container"></div> -->
+            </object>
+            <a target="_blank" href="<?php echo $this->__($boletoResultData->getData('boletoUrl')) ?>">Baixar Boleto</a>
+            <hr />
+            <div id="boleto-digital-line-copy-paste">
+                <fieldset class="fieldset">
+                    <label for="boleto-digital-line">Se preferir, você pode pagá-lo copiando e colando o código abaixo:</label><br>
+                    <input type="text" id="boleto-digital-line" name="boleto-digital-line" readonly value="<?php echo $this->__($boletoResultData->getData('boletoDigitalLine')) ?>"><br>
+                </fieldset>
+                <div class="actions-toolbar">
+                    <div class="actions">
+                        <button onclick="copyToClipboard('boleto-digital-line')" class="button" title="<?php echo __('Copiar código') ?>">
+                            <span><?php echo __('Copiar código') ?></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        <?php elseif ($boletoResultData->getData('transferStatus') == PayInStatus::IN_PROGRESS) : ?>
+            <h3><strong>Você já gerou um pagamento com <?php echo __(Liquido_Liquidobrlpaymentmethod_Util_LiquidoBrlPaymentMethodType::getPaymentMethodName($boletoResultData->getData('paymentMethod'))) ?></strong></h3>
+        <?php elseif ($boletoResultData->getData('transferStatus') == PayInStatus::SETTLED) : ?>
+            <h3><strong>Você já pagou com <?php echo __(Liquido_Liquidobrlpaymentmethod_Util_LiquidoBrlPaymentMethodType::getPaymentMethodName($boletoResultData->getData('paymentMethod'))) ?></strong></h3>
+        <?php endif; ?>
+    <?php else : ?>
+        <a href="<?php echo __(Mage::getUrl('liquidobrlpaymentmethod/index/redirect')) ?>">Alterar método de pagamento</a>
+    <?php endif; ?>
+</div>
+<script src="<?php echo $this->getSkinUrl('liquidobrlpaymentmethod/js/lib/util.js'); ?>"></script>

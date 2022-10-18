@@ -1,0 +1,49 @@
+<?php
+
+// $order = new Mage_Sales_Model_Order();
+// $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+// $order->loadByIncrementId($orderId);
+
+?>
+<div>
+    <h1><?php echo $this->__('Liquido BRL Pagamentos') ?></h1>
+    <h2>Pagar com <?php echo $this->__('PIX') ?></h2>
+    <form id="pix-customer-form" onsubmit="submitForm()" class="form" method="post" action="<?php echo Mage::helper('liquidobrlpaymentmethod')->getGeneratePixcodeUrl();
+                                                                                            ?>">
+        <fieldset class="fieldset">
+            <legend class="legend"><span><?php echo __('Dados Pessoais') ?></span></legend><br>
+            <div class="input-box">
+                <label for="customer-cpf"><?php echo __('Cpf') ?><span class="required">*</span></label>
+                <div class="control">
+                    <input type="text" name="customer-cpf" id="customer-cpf" value="" class="input-text required-entry validate-cpf" title="<?php echo __('Cpf') ?>" class="input-text">
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions buttons-set">
+            <button id="submit-button" type="submit" class="button" title="<?php echo __('Gerar PIX') ?>">
+                <span><?php echo __('Gerar PIX') ?></span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="<?php echo $this->getSkinUrl('liquidobrlpaymentmethod/js/lib/cpf-validator.js'); ?>"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+    //< ![CDATA[
+    var customerForm = new VarienForm('pix-customer-form', true);
+    Validation.add('validate-cpf', 'CPF inválido.', function(field_value) {
+        const isValid = validateCPF(field_value);
+        return isValid;
+    });
+    //]]>
+
+    function submitForm() {
+        var isFormValid = customerForm.validator.validate();
+        if (isFormValid) {
+            document.getElementById("submit-button").disabled = true;
+        }
+    }
+
+    jQuery("#customer-cpf").mask("999.999.999-99");
+</script>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Liquido_Liquidobrlpaymentmethod>
+            <active>true</active>
+            <codePool>community</codePool>
+
+            <depends>
+                <Mage_Payment />
+            </depends>
+        </Liquido_Liquidobrlpaymentmethod>
+    </modules>
+</config>
