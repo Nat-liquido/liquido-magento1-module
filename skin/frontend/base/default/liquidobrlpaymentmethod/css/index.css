@@ -1,0 +1,43 @@
+.liquido-container {
+    text-align: left;
+    width: 100%;
+}
+
+.liquido-container #payin-methods {
+    list-style-type: none;
+    padding: 0;
+}
+
+.liquido-container #payin-methods a {
+    text-decoration: none;
+}
+
+.liquido-container #payin-methods li img {
+    width: 50px;
+}
+
+.liquido-container #payin-methods li {
+    margin-top: 8px;
+    padding: 20px;
+
+    border-radius: 3px;
+    background-color: #ecf0f1;
+    color: #2d3436;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+div.payin-method-single {
+    margin-left: 12px;
+}
+
+div.payin-method-single p {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+div.payin-method-single small {
+    color: #636e72;
+}
