@@ -3,8 +3,7 @@
     "description": "Liquido Pay In module for Magento 1.9",
     "type": "magento-module",
     "license": "MIT",
-    "prefer-stable": true,
-    "minimum-stability": "dev",
+    "version": "0.0.8",
     "config": {
         "vendor-dir": "lib/Liquidobrl/vendor"
     },
@@ -15,9 +14,16 @@
     },
     "extra": {
         "map": [
-            ["app/code/community/Liquido", "app/code/community/Liquido"],
+            ["app/code/community/Liquido/Liquidobrlpaymentmethod", "app/code/community/Liquido/Liquidobrlpaymentmethod"],
             ["app/etc/modules/Liquido_All.xml", "app/etc/modules/Liquido_All.xml"],
-            ["app/design/frontend/base/default/template/liquidobrlpaymentmethod", "app/design/frontend/base/default/template/liquidobrlpaymentmethod"],
+            ["app/design/frontend/base/default/template/liquidobrlpaymentmethod/boleto/boletoresult.phtml", "app/design/frontend/base/default/template/liquidobrlpaymentmethod/boleto/boletoresult.phtml"],
+            ["app/design/frontend/base/default/template/liquidobrlpaymentmethod/boleto/form.phtml", "app/design/frontend/base/default/template/liquidobrlpaymentmethod/boleto/form.phtml"],
+            ["app/design/frontend/base/default/template/liquidobrlpaymentmethod/creditcard/creditcardresult.phtml", "app/design/frontend/base/default/template/liquidobrlpaymentmethod/creditcard/creditcardresult.phtml"],
+            ["app/design/frontend/base/default/template/liquidobrlpaymentmethod/creditcard/form.phtml", "app/design/frontend/base/default/template/liquidobrlpaymentmethod/creditcard/form.phtml"],
+            ["app/design/frontend/base/default/template/liquidobrlpaymentmethod/form/liquidobrlpaymentmethod.phtml", "app/design/frontend/base/default/template/liquidobrlpaymentmethod/form/liquidobrlpaymentmethod.phtml"],
+            ["app/design/frontend/base/default/template/liquidobrlpaymentmethod/pixcode/pixresult.phtml", "app/design/frontend/base/default/template/liquidobrlpaymentmethod/pixcode/pixresult.phtml"],
+            ["app/design/frontend/base/default/template/liquidobrlpaymentmethod/pixcode/form.phtml", "app/design/frontend/base/default/template/liquidobrlpaymentmethod/pixcode/form.phtml"],
+            ["app/design/frontend/base/default/template/liquidobrlpaymentmethod/index.phtml", "app/design/frontend/base/default/template/liquidobrlpaymentmethod/index.phtml"],
             ["skin/frontend/base/default/liquidobrlpaymentmethod", "skin/frontend/base/default/liquidobrlpaymentmethod"]
         ]
     }
