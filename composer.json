@@ -11,21 +11,19 @@
         "php": ">=5.6",
         "liquido-brl/payin-php-sdk": "0.0.4",
         "magento-hackathon/magento-composer-installer": "*",
-        "composer/installers": "^1.0",
-        "oomphinc/composer-installers-extender": "v1.1.2"
+        "composer/installers": "^1.0"
     },
     "extra": {
+        "installer-paths": {
+            "lib/Liquidobrl/vendor/{$name}/": ["liquido-brl/payin-php-sdk"]
+        },
         "map": [
             ["app/code/community/Liquido", "app/code/community/Liquido"],
             ["app/etc/modules/Liquido_All.xml", "app/etc/modules/Liquido_All.xml"],
             ["app/design/frontend/base/default/template/liquidobrlpaymentmethod", "app/design/frontend/base/default/template/liquidobrlpaymentmethod"],
             ["lib/Liquidobrl/vendor", "lib/Liquidobrl/vendor"],
             ["skin/frontend/base/default/liquidobrlpaymentmethod", "skin/frontend/base/default/liquidobrlpaymentmethod"]
-        ],
-        "installer-types": ["library"],
-        "installer-paths": {
-            "lib/Liquidobrl/vendor/{$name}/": ["liquido-brl/payin-php-sdk"]
-        }
+        ]
     }
     
 }
