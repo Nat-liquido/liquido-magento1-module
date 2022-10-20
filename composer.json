@@ -13,10 +13,15 @@
         "magento-hackathon/magento-composer-installer": "*",
         "composer/installers": "^1.0"
     },
+    "scripts": {
+        "post-install-cmd": [
+            "cp -R vendor/liquido-brl/payin-php-sdk vendor/liquido/liquidobrlpaymentmethod/lib/Liquidobrl/vendor"
+        ],
+        "post-update-cmd": [
+            "cp -R vendor/liquido-brl/payin-php-sdk vendor/liquido/liquidobrlpaymentmethod/lib/Liquidobrl/vendor"
+        ]
+    },
     "extra": {
-        "installer-paths": {
-            "lib/Liquidobrl/vendor/{$name}/": ["liquido-brl/payin-php-sdk"]
-        },
         "map": [
             ["app/code/community/Liquido", "app/code/community/Liquido"],
             ["app/etc/modules/Liquido_All.xml", "app/etc/modules/Liquido_All.xml"],
