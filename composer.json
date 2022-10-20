@@ -3,7 +3,7 @@
     "description": "Liquido Pay In module for Magento 1.9",
     "type": "magento-module",
     "license": "MIT",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "config": {
         "vendor-dir": "lib/Liquidobrl/vendor"
     },
@@ -20,5 +20,9 @@
             ["lib/Liquidobrl/vendor", "lib/Liquidobrl/vendor"],
             ["skin/frontend/base/default/liquidobrlpaymentmethod", "skin/frontend/base/default/liquidobrlpaymentmethod"]
         ]
+    },
+    "installer-types": ["library"],
+    "installer-paths": {
+        "lib/Liquidobrl/vendor": ["liquido-brl/payin-php-sdk"]
     }
 }
