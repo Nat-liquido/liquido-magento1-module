@@ -14,11 +14,11 @@
         "composer/installers": "^1.0"
     },
     "scripts": {
-        "post-install-cmd": [
-            "cp -R vendor/liquido-brl/payin-php-sdk vendor/liquido/liquidobrlpaymentmethod/lib/Liquidobrl/vendor"
+        "post-package-install": [
+            "cp -R vendor/liquido-brl vendor/liquido/liquidobrlpaymentmethod/lib/Liquidobrl/vendor"
         ],
-        "post-update-cmd": [
-            "cp -R vendor/liquido-brl/payin-php-sdk vendor/liquido/liquidobrlpaymentmethod/lib/Liquidobrl/vendor"
+        "post-package-update": [
+            "cp -R vendor/liquido-brl vendor/liquido/liquidobrlpaymentmethod/lib/Liquidobrl/vendor"
         ]
     },
     "extra": {
