@@ -13,6 +13,7 @@
         "magento-hackathon/magento-composer-installer": "*"
     },
     "extra": {
+        "magento-root-dir": ".",
         "map": [
             ["app/code/community/Liquido", "app/code/community/Liquido"],
             ["app/etc/modules/Liquido_All.xml", "app/etc/modules/Liquido_All.xml"],
