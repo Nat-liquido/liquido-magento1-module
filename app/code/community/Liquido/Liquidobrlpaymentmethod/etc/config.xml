@@ -3,7 +3,7 @@
 
     <modules>
         <Liquido_Liquidobrlpaymentmethod>
-            <version>0.2.3</version>
+            <version>0.0.1</version>
         </Liquido_Liquidobrlpaymentmethod>
     </modules>
 
@@ -67,6 +67,11 @@
                 <sort_order>100</sort_order>
             </liquidobrlpaymentmethod>
         </payment>
+        <dev>
+            <template>
+                <allow_symlink>1</allow_symlink>
+            </template>
+        </dev>
     </default>
 
     <frontend>
