@@ -183,7 +183,7 @@ class Liquido_Liquidobrlpaymentmethod_BoletoController extends Mage_Core_Control
                     Mage::helper('liquidobrlpaymentmethod')->isProductionModeActived()
                 );
 
-                $payInRequest = new PayInRequest([
+                $payload = [
                     "idempotencyKey" => $idempotencyKey,
                     "amount" => $this->boletoInputData->getData('grandTotal') * 100,
                     "paymentMethod" => PaymentMethod::BOLETO,
@@ -194,10 +194,15 @@ class Liquido_Liquidobrlpaymentmethod_BoletoController extends Mage_Core_Control
                     "paymentTerm" => [
                         "paymentDeadline" => $this->boletoInputData->getData("paymentDeadline")
                     ]
-                ]);
+                ];
 
+                Mage::log('Boleto Payload Request: '. json_encode($payload), null, 'liquido.log', true);
+
+                $payInRequest = new PayInRequest($payload);
                 $payInService = new PayInService();
                 $payInResponse = $payInService->createPayIn($config, $payInRequest);
+
+                Mage::log('Boleto Response: '. json_encode($payInResponse), null, 'liquido.log', true);
 
                 $this->manageBoletoResponse($payInResponse);
 
