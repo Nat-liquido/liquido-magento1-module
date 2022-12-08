@@ -188,7 +188,7 @@ class Liquido_Liquidobrlpaymentmethod_PixcodeController extends Mage_Core_Contro
                     Mage::helper('liquidobrlpaymentmethod')->isProductionModeActived()
                 );
 
-                $payInRequest = new PayInRequest([
+                $payload = [
                     "idempotencyKey" => $idempotencyKey,
                     "amount" => $this->pixInputData->getData('grandTotal') * 100,
                     "currency" => Currency::BRL,
@@ -198,10 +198,15 @@ class Liquido_Liquidobrlpaymentmethod_PixcodeController extends Mage_Core_Contro
                     "callbackUrl" => Mage::helper('liquidobrlpaymentmethod')->getWebhookUrl(),
                     "payer" => $this->pixInputData->getData('payer'),
                     "description" => "Magento1.x-Module-PIX-Request",
-                ]);
+                ];
 
+                Mage::log('Pix Payload Request: '. json_encode($payload), null, 'liquido.log', true);
+
+                $payInRequest = new PayInRequest($payload);
                 $payInService = new PayInService();
                 $payInResponse = $payInService->createPayIn($config, $payInRequest);
+
+                Mage::log('Pix Response: '. json_encode($payInResponse), null, 'liquido.log', true);
 
                 $this->managePixResponse($payInResponse);
 

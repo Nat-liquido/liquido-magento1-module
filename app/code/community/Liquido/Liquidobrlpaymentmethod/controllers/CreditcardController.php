@@ -210,7 +210,7 @@ class Liquido_Liquidobrlpaymentmethod_CreditCardController extends Mage_Core_Con
                     Mage::helper('liquidobrlpaymentmethod')->isProductionModeActived()
                 );
 
-                $payInRequest = new PayInRequest([
+                $payload = [
                     "idempotencyKey" => $idempotencyKey,
                     "amount" => $this->creditCardInputData->getData('grandTotal') * 100,
                     "paymentMethod" => PaymentMethod::CREDIT_CARD,
@@ -223,10 +223,15 @@ class Liquido_Liquidobrlpaymentmethod_CreditCardController extends Mage_Core_Con
                     "riskData" => $this->creditCardInputData->getData('riskData'),
                     "description" => "Magento1.x-Module-Credit-Card-Request",
                     "callbackUrl" => Mage::helper('liquidobrlpaymentmethod')->getWebhookUrl()
-                ]);
+                ];
 
+                Mage::log('Credit Card Payload Request: '. json_encode($payload), null, 'liquido.log', true);
+
+                $payInRequest = new PayInRequest($payload);
                 $payInService = new PayInService();
                 $payInResponse = $payInService->createPayIn($config, $payInRequest);
+
+                Mage::log('Credit Card Response: '. json_encode($payInResponse), null, 'liquido.log', true);
 
                 $this->manageCreditCardResponse($payInResponse);
 
