@@ -3,7 +3,9 @@
 require_once Mage::getBaseDir('lib') . '/Liquidobrl/vendor/autoload.php';
 
 use \LiquidoBrl\PayInPhpSdk\Util\Config;
-use \LiquidoBrl\PayInPhpSdk\Util\PaymentMethod;
+use \LiquidoBrl\PayInPhpSdk\Util\Country;
+use \LiquidoBrl\PayInPhpSdk\Util\Currency;
+use \LiquidoBrl\PayInPhpSdk\Util\Brazil\PaymentMethod;
 use \LiquidoBrl\PayInPhpSdk\Util\PaymentFlow;
 use \LiquidoBrl\PayInPhpSdk\Util\PayInStatus;
 use \LiquidoBrl\PayInPhpSdk\Model\PayInRequest;
@@ -188,6 +190,8 @@ class Liquido_Liquidobrlpaymentmethod_BoletoController extends Mage_Core_Control
                     "amount" => $this->boletoInputData->getData('grandTotal') * 100,
                     "paymentMethod" => PaymentMethod::BOLETO,
                     "paymentFlow" => PaymentFlow::DIRECT,
+                    "currency" => Currency::BRL,
+                    "country" => Country::BRAZIL,
                     "callbackUrl" => Mage::helper('liquidobrlpaymentmethod')->getWebhookUrl(),
                     "payer" => $this->boletoInputData->getData('payer'),
                     "description" => "Magento1.x-Module-Boleto-Request",

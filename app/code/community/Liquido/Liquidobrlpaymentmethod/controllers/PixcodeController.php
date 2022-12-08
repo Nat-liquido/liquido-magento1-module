@@ -3,7 +3,9 @@
 require_once Mage::getBaseDir('lib') . '/Liquidobrl/vendor/autoload.php';
 
 use \LiquidoBrl\PayInPhpSdk\Util\Config;
-use \LiquidoBrl\PayInPhpSdk\Util\PaymentMethod;
+use \LiquidoBrl\PayInPhpSdk\Util\Country;
+use \LiquidoBrl\PayInPhpSdk\Util\Currency;
+use \LiquidoBrl\PayInPhpSdk\Util\Brazil\PaymentMethod;
 use \LiquidoBrl\PayInPhpSdk\Util\PaymentFlow;
 use \LiquidoBrl\PayInPhpSdk\Util\PayInStatus;
 use \LiquidoBrl\PayInPhpSdk\Model\PayInRequest;
@@ -189,6 +191,8 @@ class Liquido_Liquidobrlpaymentmethod_PixcodeController extends Mage_Core_Contro
                 $payInRequest = new PayInRequest([
                     "idempotencyKey" => $idempotencyKey,
                     "amount" => $this->pixInputData->getData('grandTotal') * 100,
+                    "currency" => Currency::BRL,
+                    "country" => Country::BRAZIL,   
                     "paymentMethod" => PaymentMethod::PIX_STATIC_QR,
                     "paymentFlow" => PaymentFlow::DIRECT,
                     "callbackUrl" => Mage::helper('liquidobrlpaymentmethod')->getWebhookUrl(),

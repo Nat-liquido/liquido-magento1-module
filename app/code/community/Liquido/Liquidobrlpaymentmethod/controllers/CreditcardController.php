@@ -3,7 +3,9 @@
 require_once Mage::getBaseDir('lib') . '/Liquidobrl/vendor/autoload.php';
 
 use \LiquidoBrl\PayInPhpSdk\Util\Config;
-use \LiquidoBrl\PayInPhpSdk\Util\PaymentMethod;
+use \LiquidoBrl\PayInPhpSdk\Util\Country;
+use \LiquidoBrl\PayInPhpSdk\Util\Currency;
+use \LiquidoBrl\PayInPhpSdk\Util\Common\PaymentMethod;
 use \LiquidoBrl\PayInPhpSdk\Util\PaymentFlow;
 use \LiquidoBrl\PayInPhpSdk\Util\PayInStatus;
 use \LiquidoBrl\PayInPhpSdk\Model\PayInRequest;
@@ -102,9 +104,9 @@ class Liquido_Liquidobrlpaymentmethod_CreditCardController extends Mage_Core_Con
                 "expirationYear" => $customerCardDateArray[1],
                 "cvc" => $customerCardCvv
             ],
-            // "riskData" => [
-            //     "ipAddress" => "192.168.0.1"
-            // ],
+            "riskData" => [
+                "ipAddress" => $_SERVER['REMOTE_ADDR']
+            ],
             "installments" => $customerCardInstallments
         ]);
 
@@ -213,9 +215,12 @@ class Liquido_Liquidobrlpaymentmethod_CreditCardController extends Mage_Core_Con
                     "amount" => $this->creditCardInputData->getData('grandTotal') * 100,
                     "paymentMethod" => PaymentMethod::CREDIT_CARD,
                     "paymentFlow" => PaymentFlow::DIRECT,
+                    "currency" => Currency::BRL,
+                    "country" => Country::BRAZIL,
                     "payer" => $this->creditCardInputData->getData('payer'),
                     "card" => $this->creditCardInputData->getData('card'),
                     "installments" => $this->creditCardInputData->getData('installments'),
+                    "riskData" => $this->creditCardInputData->getData('riskData'),
                     "description" => "Magento1.x-Module-Credit-Card-Request",
                     "callbackUrl" => Mage::helper('liquidobrlpaymentmethod')->getWebhookUrl()
                 ]);

@@ -1,19 +1,20 @@
 <?php
 
-use \LiquidoBrl\PayInPhpSdk\Util\PaymentMethod;
+use \LiquidoBrl\PayInPhpSdk\Util\Common\PaymentMethod as CommonPaymentMethod;
+use \LiquidoBrl\PayInPhpSdk\Util\Brazil\PaymentMethod as BrazilPaymentMethod;
 
 abstract class Liquido_Liquidobrlpaymentmethod_Util_LiquidoBrlPaymentMethodType
 {
     public static function getPaymentMethodName($paymentMethodType)
     {
         switch ($paymentMethodType) {
-            case PaymentMethod::CREDIT_CARD:
+            case CommonPaymentMethod::CREDIT_CARD:
                 return Liquido_Liquidobrlpaymentmethod_Util_LiquidoBrlPayInMethod::CREDIT_CARD["title"];
                 break;
-            case PaymentMethod::PIX_STATIC_QR:
+            case BrazilPaymentMethod::PIX_STATIC_QR:
                 return Liquido_Liquidobrlpaymentmethod_Util_LiquidoBrlPayInMethod::PIX["title"];
                 break;
-            case PaymentMethod::BOLETO:
+            case BrazilPaymentMethod::BOLETO:
                 return Liquido_Liquidobrlpaymentmethod_Util_LiquidoBrlPayInMethod::BOLETO["title"];
                 break;
             default:
