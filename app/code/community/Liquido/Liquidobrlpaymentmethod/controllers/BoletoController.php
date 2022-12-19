@@ -115,7 +115,7 @@ class Liquido_Liquidobrlpaymentmethod_BoletoController extends Mage_Core_Control
             }
 
             $this->boletoResultData->setData('transferStatus', $boletoResponse->transferStatus);
-            $this->boletoResultData->setData('boletoUrl', $boletoResponse->boletoUrl);
+            $this->boletoResultData->setData('boletoUrl', $boletoResponse->boletoUrl->path);
         } else {
             $this->boletoResultData->setData('hasFailed', true);
 
