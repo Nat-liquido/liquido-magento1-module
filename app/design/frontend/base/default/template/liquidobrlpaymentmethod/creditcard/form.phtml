@@ -12,15 +12,32 @@
                 </div>
             </div>
             <div class="input-box">
-                <label for="customer-card-name"><?php echo __('Nome Completo') ?><span class="required">*</span></label><br>
+                <label for="customer-card-name"><?php echo __('Nome do Titular') ?><span class="required">*</span></label><br>
                 <div class="control">
                     <input type="text" name="customer-card-name" id="customer-card-name" value="" class="input-text required-entry" title="<?php echo __('Nome Completo') ?>" class="input-text">
                 </div>
             </div>
             <div class="input-box">
-                <label for="customer-card-date"><?php echo __('Mes/Ano') ?><span class="required">*</span></label><br>
+                <label for="customer-card-date"><?php echo __('Validade') ?><span class="required">*</span></label><br>
                 <div class="control">
-                    <input type="text" name="customer-card-date" id="customer-card-date" value="" class="input-text required-entry" title="<?php echo __('Mes/Ano') ?>" class="input-text">
+                    <span class="card-month">
+                        <select name="customer-card-month" id="customer-card-month" class="customer-card-month">
+                            <?php 
+                                for ($month=1; $month <= 12; $month++) :
+                                $month = ($month < 10) ? "0".$month : $month;    
+                            ?>
+                                <option value=<?php echo $month ?>><?php echo $month ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </span>
+                    <span class="card-validate-separator"> / </span> 
+                    <span class="card-year">
+                        <select name="customer-card-year" id="customer-card-year" class="customer-card-year">
+                            <?php for ($year=2023; $year <= 2040; $year++) :?>
+                                <option value=<?php echo $year ?>><?php echo $year ?></option>
+                            <?php endfor ?>
+                        </select>
+                    </span>
                 </div>
             </div>
             <div class="input-box">
@@ -37,7 +54,7 @@
             </div>
             <div class="input-box">
                 <label for="customer-installments"><?php echo __('Número de Parcelas') ?><span class="required">*</span></label><br>
-                <select id="customer-installments" name="customer-installments" class="input-text required-entry" style="width:30%;">
+                <select id="customer-installments" name="customer-installments" class="input-text required-entry">
                     <?php $optionsInfoArray = Mage::helper('liquidobrlpaymentmethod')->getInstallments(); ?>
                     <?php foreach ($optionsInfoArray as $index => $optionInfo) : ?>
                         <option value="<?php echo $index + 1 ?>"><?php echo $optionInfo; ?></option>

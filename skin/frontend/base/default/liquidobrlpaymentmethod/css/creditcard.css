@@ -1,0 +1,19 @@
+.card-month,.card-year {
+    float: left; 
+    width: 80px; 
+    margin-left: 10px;
+}
+
+.customer-card-month, .customer-card-year {
+    width: 100%;
+    font-size: 15px;
+}
+
+.card-validate-separator {
+    float: left; 
+    font-size: 15px;
+}
+
+#customer-installments {
+    width:30%;
+}
