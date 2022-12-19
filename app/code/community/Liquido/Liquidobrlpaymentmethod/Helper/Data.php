@@ -1,5 +1,7 @@
 <?php
 
+require_once 'app/Mage.php';
+
 use \LiquidoBrl\PayInPhpSdk\Util\PayInStatus;
 
 class Liquido_Liquidobrlpaymentmethod_Helper_Data extends Mage_Core_Helper_Abstract
@@ -231,7 +233,16 @@ class Liquido_Liquidobrlpaymentmethod_Helper_Data extends Mage_Core_Helper_Abstr
             $magentoSalesOrder = Mage::getModel('sales/order')->loadByIncrementId($orderId);
             $magentoOrderStatus = Liquido_Liquidobrlpaymentmethod_Util_LiquidoBrlPayInStatus::mapToMagentoSaleOrderStatus($transferStatus);
             if ($magentoSalesOrder->getStatus() != $magentoOrderStatus) {
-                $magentoSalesOrder->setStatus($magentoOrderStatus);
+                
+                if ($magentoSalesOrder->isCanceled()) {
+                    $this->resetOrder($magentoSalesOrder, $magentoOrderStatus);
+                } elseif ($magentoOrderStatus == Liquido_Liquidobrlpaymentmethod_Util_MagentoSaleOrderStatus::CANCELLED) {
+                    Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+                    $magentoSalesOrder->cancel();
+                } else {
+                    $magentoSalesOrder->setStatus($magentoOrderStatus);
+                }
+                
                 $magentoSalesOrder->save();
             }
             /** -------------- Magento Sales Order -------------- */
@@ -267,5 +278,67 @@ class Liquido_Liquidobrlpaymentmethod_Helper_Data extends Mage_Core_Helper_Abstr
         }
 
         return $textsForOptionsArray;
+    }
+
+    public function resetOrder($order, $status) 
+    {
+        $order->setState(
+            Mage_Sales_Model_Order::STATE_NEW,
+            true,
+            'Reset Order',
+            false
+        );
+    
+        $order->setStatus($status);
+    
+        $order->setBaseDiscountCanceled(0);
+        $order->setBaseShippingCanceled(0);
+        $order->setBaseSubtotalCanceled(0);
+        $order->setBaseTaxCanceled(0);
+        $order->setBaseTotalCanceled(0);
+        $order->setDiscountCanceled(0);
+        $order->setShippingCanceled(0);
+        $order->setSubtotalCanceled(0);
+        $order->setTaxCanceled(0);
+        $order->setTotalCanceled(0);
+    
+        $stockItems = [];
+        $productIds = [];
+    
+        foreach ($order->getAllItems() as $item) {
+            /** @var $item Mage_Sales_Model_Order_Item */
+            $item->setQtyCanceled(0);
+            $item->setTaxCanceled(0);
+            $item->setHiddenTaxCanceled(0);
+            $item->save();
+
+            $stockItems[$item->getProductId()] = ['qty'=>$item->getQtyOrdered()];
+            $productIds[$item->getProductId()] = $item->getProductId();
+            $children   = $item->getChildrenItems();
+            if ($children) {
+                foreach ($children as $childItem) {
+                    $productIds[$childItem->getProductId()] = $childItem->getProductId();
+                }
+            }
+        }
+    
+        /** @var Mage_CatalogInventory_Model_Stock $stockModel */
+        $stockModel = Mage::getSingleton('cataloginventory/stock');
+        $itemsForReindex = $stockModel->registerProductsSale($stockItems);
+    
+        if (count($productIds)) {
+            Mage::getResourceSingleton('cataloginventory/indexer_stock')->reindexProducts($productIds);
+        } 
+    
+        $stockProductIds = array();
+        foreach ($itemsForReindex as $item) {
+            $item->save();
+            $stockProductIds[] = $item->getProductId();
+        }
+        if (count($stockProductIds)) {
+            Mage::getResourceSingleton('catalog/product_indexer_price')->reindexProductIds($stockProductIds);
+        }
+
+        $order->save();
     }
 }
