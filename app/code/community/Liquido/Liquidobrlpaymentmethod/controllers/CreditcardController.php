@@ -58,12 +58,24 @@ class Liquido_Liquidobrlpaymentmethod_CreditCardController extends Mage_Core_Con
             return false;
         }
 
-        $customerCardDate = $this->getRequest()->getPost('customer-card-date');
-        $customerCardDateArray = explode('/', $customerCardDate);
-        if ($customerCardDate == null) {
-            $this->errorMessage = __('Erro ao obter a data de validade do cartao.');
+        $customerCardMonth = $this->getRequest()->getPost('customer-card-month');
+        if ($customerCardMonth == null) {
+            $this->errorMessage = __('Erro ao obter o mês de validade do cartão.');
             return false;
         }
+
+        $customerCardYear = $this->getRequest()->getPost('customer-card-year');
+        if ($customerCardYear == null) {
+            $this->errorMessage = __('Erro ao obter o ano de validade do cartão.');
+            return false;
+        }
+
+        // $customerCardDate = $this->getRequest()->getPost('customer-card-date');
+        // $customerCardDateArray = explode('/', $customerCardDate);
+        // if ($customerCardDate == null) {
+        //     $this->errorMessage = __('Erro ao obter a data de validade do cartao.');
+        //     return false;
+        // }
 
         $customerCardCvv = $this->getRequest()->getPost('customer-card-cvv');
         if ($customerCardCvv == null) {
@@ -100,9 +112,27 @@ class Liquido_Liquidobrlpaymentmethod_CreditCardController extends Mage_Core_Con
             "card" => [
                 "cardHolderName" => $customerCardName,
                 "cardNumber" => $customerCardNumber,
-                "expirationMonth" => $customerCardDateArray[0],
-                "expirationYear" => $customerCardDateArray[1],
+                "expirationMonth" => $customerCardMonth,
+                "expirationYear" => $customerCardYear,
                 "cvc" => $customerCardCvv
+            ],
+            "orderInfo" => [  
+                "orderId" => $orderId,  
+                "shippingInfo" => [ 
+                    "name" => $order->getCustomerName(),  
+                    "phone" => $order->getShippingAddress()->getData('telephone'),  
+                    "email" => $order->getCustomerEmail(),
+                    "address" => [
+                        "street" => $order->getShippingAddress()->getData('street'),
+                        "number" => "Unknown",
+                        "complement" => "Unknown",
+                        "district" => "Unknown",
+                        "city" => $order->getShippingAddress()->getData('city'),
+                        "state" => $order->getShippingAddress()->getData('region'),
+                        "zipCode" => $order->getShippingAddress()->getData('postcode'),
+                        "country" => $order->getShippingAddress()->getData('country_id')
+                    ]
+                ]
             ],
             "riskData" => [
                 "ipAddress" => $_SERVER['REMOTE_ADDR']
@@ -220,6 +250,7 @@ class Liquido_Liquidobrlpaymentmethod_CreditCardController extends Mage_Core_Con
                     "payer" => $this->creditCardInputData->getData('payer'),
                     "card" => $this->creditCardInputData->getData('card'),
                     "installments" => $this->creditCardInputData->getData('installments'),
+                    "orderInfo" => $this->creditCardInputData->getData('orderInfo'),
                     "riskData" => $this->creditCardInputData->getData('riskData'),
                     "description" => "Magento1.x-Module-Credit-Card-Request",
                     "callbackUrl" => Mage::helper('liquidobrlpaymentmethod')->getWebhookUrl()
